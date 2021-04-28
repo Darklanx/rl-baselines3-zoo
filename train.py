@@ -3,12 +3,13 @@ import difflib
 import importlib
 import os
 import uuid
-
+import sys
+sys.path.insert(0, "/home/darklanx/Desktop/stable-baselines3")
 import gym
 import numpy as np
 import seaborn
 import torch as th
-from stable_baselines3.common.utils import set_random_seed
+from stable_baselines3.common.utils import set_random_seed, aaa
 
 # Register custom envs
 import utils.import_envs  # noqa: F401 pytype: disable=import-error
@@ -17,7 +18,11 @@ from utils.utils import ALGOS, StoreDict
 
 seaborn.set()
 
+
 if __name__ == "__main__":  # noqa: C901
+    for path in sys.path:
+        print(path)
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--algo", help="RL Algorithm", default="ppo", type=str, required=False, choices=list(ALGOS.keys()))
     parser.add_argument("--env", type=str, default="CartPole-v1", help="environment ID")
