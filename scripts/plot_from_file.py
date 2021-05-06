@@ -6,7 +6,7 @@ import pandas as pd
 import pytablewriter
 import seaborn
 from matplotlib import pyplot as plt
-
+import torch as th
 
 # From https://github.com/mwaskom/seaborn/blob/master/seaborn/categorical.py
 def restyle_boxplot(artist_dict, color, gray="#222222", linewidth=1, fliersize=5):
@@ -58,11 +58,15 @@ if args.latex:
 
 filename = args.input
 
-if not filename.endswith(".pkl"):
-    filename += ".pkl"
+# if not filename.endswith(".pkl"):
+    # filename += ".pkl"
 
 with open(filename, "rb") as file_handler:
-    results = pickle.load(file_handler)
+    # results = pickle.load(file_handler)
+    results = np.load(file_handler)
+    for key, item in results.items():
+        print(key)
+    # print(results["results"])
 
 # Plot table
 writer = pytablewriter.MarkdownTableWriter()
@@ -236,3 +240,4 @@ if args.boxplot:
     plt.tight_layout()
 
 plt.show()
+plt.savefig("plot_from_file.png")

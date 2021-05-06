@@ -38,16 +38,23 @@ LunarLander-v2:
 MountainCar-v0:
   normalize: true
   policy: 'MlpPolicy'
-  ent_coef: .0
   n_timesteps: !!float 1.2e6
-  learning_rate: !!float 4e-3
-  batch_size: 128
-  buffer_size: 10000
-  learning_starts: 1000
-  gamma: 0.98
-  train_freq: 16
-  gradient_steps: 8
-  policy_kwargs: "dict(net_arch=[256, 256])"
+  learning_rate: !!float 7e-4
+  batch_size: 16
+  buffer_size: 20
+  learning_starts: 200
+  gamma: 0.99
+  train_freq: (5, episode)
+  tau: 0.5
+  target_update_interval: 1000
+  n_envs: 16
+  exploration_final_eps: 0.05
+  exploration_fraction: 0.1
+  exploration_initial_eps: 0.3
+  gradient_steps: 1
+  vf_coef: 0.5
+
+  policy_kwargs: "dict(net_arch=[128, 128])"
 
 
 Acrobot-v1:

@@ -8,12 +8,14 @@ import pytablewriter
 import seaborn
 from matplotlib import pyplot as plt
 from scipy.spatial import distance_matrix
-
+from scipy.signal import savgol_filter
 parser = argparse.ArgumentParser("Gather results, plot them and create table")
 parser.add_argument("-a", "--algos", help="Algorithms to include", nargs="+", type=str)
 parser.add_argument("-e", "--env", help="Environments to include", nargs="+", type=str)
 parser.add_argument("-f", "--exp-folders", help="Folders to include", nargs="+", type=str)
 parser.add_argument("-l", "--labels", help="Label for each folder", nargs="+", type=str)
+parser.add_argument("-ids", "--ids", help="indexes of the experiment", nargs="+", type=int)
+parser.add_argument("--smooth", help="smooth y axis with window size args.smooth", type=int, default=-1)
 parser.add_argument(
     "-k",
     "--key",
@@ -45,6 +47,57 @@ args.algos = [algo.upper() for algo in args.algos]
 if args.labels is None:
     args.labels = args.exp_folders
 
+for env in args.env:
+    plt.figure(f"Results {env}")
+    plt.title(f"{env}-v0 eval", fontsize=14)
+
+    x_label_suffix = "" if args.no_million else "(in Million)"
+    plt.xlabel(f"Timesteps {x_label_suffix}", fontsize=14)
+    plt.ylabel("Score", fontsize=14)
+    results[env] = {}
+    post_processed_results[env] = {}
+    for algo in args.algos:
+        for folder_idx, exp_folder in enumerate(args.exp_folders):
+
+            log_path = os.path.join(exp_folder, algo.lower())
+
+            if not os.path.isdir(log_path):
+                continue
+            if args.ids is not None:
+                dirs = [
+                    os.path.join(log_path, d)
+                    for d in os.listdir(log_path)
+                    if (env in d and os.path.isdir(os.path.join(log_path, d)) and int(d.split("_")[-1]) in args.ids)
+                ]
+            else:
+                dirs = [
+                    os.path.join(log_path, d)
+                    for d in os.listdir(log_path)
+                    if (env in d and os.path.isdir(os.path.join(log_path, d)))
+                ]
+
+
+            for _, dir_ in enumerate(dirs):
+                try:
+                    log = np.load(os.path.join(dir_, "evaluations.npz"))
+                except FileNotFoundError:
+                    print("Eval not found for", dir_)
+                    continue
+                '''
+                for key, item in log.items():
+                    print(key)
+                    print(item.shape)
+                '''
+                # log["results"] is evaled multiple times at given timestep, so take mean along axis=1
+                if args.smooth != -1:
+                    y = savgol_filter(log['results'].mean(axis=1), args.smooth, 3) # window size args.smooth polynomial order 3
+
+                    plt.plot(log["timesteps"][0:args.max_timesteps], y[:args.max_timesteps], label=dir_.split("/")[-1])
+                else:
+                    plt.plot(log["timesteps"][0:args.max_timesteps], log["results"].mean(axis=1)[:args.max_timesteps], label=dir_.split("/")[-1])
+            plt.legend()
+            plt.savefig("eval.png")           
+'''
 for env in args.env:  # noqa: C901
     plt.figure(f"Results {env}")
     plt.title(f"{env}BulletEnv-v0", fontsize=14)
@@ -65,12 +118,7 @@ for env in args.env:  # noqa: C901
 
             results[env][f"{args.labels[folder_idx]}-{algo}"] = 0.0
 
-            dirs = [
-                os.path.join(log_path, d)
-                for d in os.listdir(log_path)
-                if (env in d and os.path.isdir(os.path.join(log_path, d)))
-            ]
-
+            
             max_len = 0
             merged_timesteps, merged_results = [], []
             last_eval = []
@@ -242,3 +290,4 @@ if not args.no_display:
     plt.show()
 
 plt.savefig("all_plot.png")
+'''

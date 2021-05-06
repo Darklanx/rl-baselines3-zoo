@@ -9,7 +9,7 @@ import stable_baselines3 as sb3  # noqa: F401
 import torch as th  # noqa: F401
 import yaml
 from sb3_contrib import QRDQN, TQC
-from stable_baselines3 import A2C, DDPG, DQN, HER, PPO, SAC, TD3, OFFPAC
+from stable_baselines3 import A2C, DDPG, DQN, HER, PPO, SAC, TD3, OffPAC
 from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3.common.sb2_compat.rmsprop_tf_like import RMSpropTFLike  # noqa: F401
@@ -26,7 +26,7 @@ ALGOS = {
     "her": HER,
     "sac": SAC,
     "td3": TD3,
-    "offpac": OFFPAC,
+    "offpac": OffPAC,
     # SB3 Contrib,
     "qrdqn": QRDQN,
     "tqc": TQC,

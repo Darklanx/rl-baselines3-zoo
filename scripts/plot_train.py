@@ -17,6 +17,7 @@ parser = argparse.ArgumentParser("Gather results, plot training reward/success")
 parser.add_argument("-a", "--algo", help="Algorithm to include", type=str, required=True)
 parser.add_argument("-e", "--env", help="Environment to include", type=str, required=True)
 parser.add_argument("-f", "--exp-folder", help="Folders to include", type=str, default="logs")
+parser.add_argument("-ids", "--ids", help="indexes of the experiment", nargs="+", type=int)
 parser.add_argument("--figsize", help="Figure size, width, height in inches.", nargs=2, type=int, default=[6.4, 4.8])
 parser.add_argument("--fontsize", help="Font size", type=int, default=14)
 parser.add_argument("-max", "--max-timesteps", help="Max number of timesteps to display", type=int)
@@ -36,12 +37,19 @@ x_label = {"steps": "Timesteps", "episodes": "Episodes", "time": "Walltime (in h
 
 y_axis = {"success": "is_success", "reward": "r"}[args.y_axis]
 y_label = {"success": "Training Success Rate", "reward": "Training Episodic Reward"}[args.y_axis]
+if args.ids is not None:
+    dirs = [
+        os.path.join(log_path, folder)
+        for folder in os.listdir(log_path)
+        if (env in folder and os.path.isdir(os.path.join(log_path, folder)) and int(folder.split("_")[-1]) in args.ids)
+    ]
+else:
+    dirs = [
+        os.path.join(log_path, folder)
+        for folder in os.listdir(log_path)
+        if (env in folder and os.path.isdir(os.path.join(log_path, folder)))
+    ]
 
-dirs = [
-    os.path.join(log_path, folder)
-    for folder in os.listdir(log_path)
-    if (env in folder and os.path.isdir(os.path.join(log_path, folder)))
-]
 
 plt.figure(y_label, figsize=args.figsize)
 plt.title(y_label, fontsize=args.fontsize)
@@ -54,6 +62,7 @@ for folder in dirs:
         continue
     if args.max_timesteps is not None:
         data_frame = data_frame[data_frame.l.cumsum() <= args.max_timesteps]
+        
     try:
         y = np.array(data_frame[y_axis])
     except KeyError:
@@ -65,7 +74,8 @@ for folder in dirs:
     if x.shape[0] >= args.episode_window:
         # Compute and plot rolling mean with window of size args.episode_window
         x, y_mean = window_func(x, y, args.episode_window, np.mean)
-        plt.plot(x, y_mean, linewidth=2, label=folder.split("/")[-1])
+        # print(x)
+        plt.plot(x, y_mean, linewidth=1.5, label=folder.split("/")[-1])
 
 plt.legend()
 plt.tight_layout()

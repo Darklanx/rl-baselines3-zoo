@@ -9,7 +9,7 @@ import gym
 import numpy as np
 import seaborn
 import torch as th
-from stable_baselines3.common.utils import set_random_seed, aaa
+from stable_baselines3.common.utils import set_random_seed
 
 # Register custom envs
 import utils.import_envs  # noqa: F401 pytype: disable=import-error
@@ -20,8 +20,8 @@ seaborn.set()
 
 
 if __name__ == "__main__":  # noqa: C901
-    for path in sys.path:
-        print(path)
+    # for path in sys.path:
+        # print(path)
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--algo", help="RL Algorithm", default="ppo", type=str, required=False, choices=list(ALGOS.keys()))
@@ -117,7 +117,7 @@ if __name__ == "__main__":  # noqa: C901
         # Seed but with a random one
         args.seed = np.random.randint(2 ** 32 - 1, dtype="int64").item()
 
-    set_random_seed(args.seed)
+    set_random_seed(args.seed, True)
 
     # Setting num threads to 1 makes things run faster on cpu
     if args.num_threads > 0:
