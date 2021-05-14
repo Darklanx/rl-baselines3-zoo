@@ -7,12 +7,12 @@ import numpy as np
 import torch as th
 import yaml
 from stable_baselines3.common.utils import set_random_seed
-
+import copy
 import utils.import_envs  # noqa: F401 pylint: disable=unused-import
 from utils import ALGOS, create_test_env, get_latest_run_id, get_saved_hyperparams
 from utils.exp_manager import ExperimentManager
 from utils.utils import StoreDict
-
+from test import CartPoleEnv
 
 def main():  # noqa: C901
     parser = argparse.ArgumentParser()
@@ -155,6 +155,10 @@ def main():  # noqa: C901
     model = ALGOS[algo].load(model_path, env=env, custom_objects=custom_objects, **kwargs)
 
     obs = env.reset()
+    # original_obs = copy.deepcopy(env.get_attr('state'))
+    # print("ori: ", original_obs)
+    # exit()
+    # print(obs)
 
     # Deterministic by default except for atari games
     stochastic = args.stochastic or is_atari and not args.deterministic
@@ -167,9 +171,16 @@ def main():  # noqa: C901
     # For HER, monitor success rate
     successes = []
     try:
+        # state = np.array([-0.04456399,  0.04653909,  0.01326909, -0.02099827])
+        # print(env.envs[0].state)
+        estimate(env, model)
+        exit()
         for _ in range(args.n_timesteps):
             action, state = model.predict(obs, state=state, deterministic=deterministic)
+
             obs, reward, done, infos = env.step(action)
+
+
             if not args.no_render:
                 env.render("human")
 
@@ -219,6 +230,52 @@ def main():  # noqa: C901
         print(f"Mean episode length: {np.mean(episode_lengths):.2f} +/- {np.std(episode_lengths):.2f}")
 
     env.close()
+
+def estimate(env, model, n_sample=300, max_steps=200, random_state=3):
+    states = [[-0.04155443, -0.21781648,  0.00397698,  0.25106031], [-0.06647353, -0.2183159 ,  0.01584993,  0.26209998], [-0.07893072,  0.54109963,  0.07372741, -0.44525767], [0.01646056, 0.51509615, 0.15995631, 0.13129966], [ 0.43264284,  1.64652038,  0.06831155, -0.76181641], [ 1.07579607,  2.04736614, -0.21679146, -1.6114048 ]]
+    # for i_state in range(random_state):
+    # assert model.share == True
+    for start_state in states:
+        
+        env = CartPoleEnv()
+        # start_state = env.reset()
+        rewards = []
+        a = 0
+        # model.share = True
+        print('state:', start_state)
+        _s = th.tensor([start_state]).cuda()
+        _a =  th.tensor([[a]]).cuda()
+        _a2 =  th.tensor([[1]]).cuda()
+        Q, log_prob, _ = model.policy.evaluate_actions(_s, _a, use_target_v=False, use_behav=False)
+        Q2, log_prob2, _ = model.policy.evaluate_actions(_s, _a2, use_target_v=False, use_behav=False)
+        print("Estimated Q(s,a): ", Q.item())
+        print("Estimated V(s): ", model.policy.compute_value(_s, use_target_v=False, use_behav=False).item())
+        # print("action prob: ", th.exp(log_prob).item(), th.exp(log_prob2).item())
+        for i_sample in range(n_sample):
+            # Reset and assign state
+            env.reset()
+            env.state = start_state
+            obs = start_state
+            sample_rewards = []
+            for i_step in range(max_steps):
+                if i_step != 0:
+                    action, _ = model.policy.predict(th.tensor(obs), deterministic=False)
+                else:
+                    action = a
+                obs, reward, done, infos = env.step(action)
+                sample_rewards.append(reward)
+                if i_step % 20 == 0:
+                    states.append(obs)
+                if done:
+                    break
+            rewards.append(np.sum([0.99**i*r for i, r in enumerate(sample_rewards)]))
+            
+
+        print("Sampled Q(s,a): ", np.mean(rewards))
+        print("Abs differernce: ", np.abs(Q.item() - np.mean(rewards)))
+        print("-----"*5)
+    
+
 
 
 if __name__ == "__main__":

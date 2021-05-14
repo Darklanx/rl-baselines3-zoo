@@ -8,3 +8,6 @@ python3 scripts/plot_eval.py -a offpac  --env  BreakoutNoFrameskip-v4 -f logs  -
 python3 scripts/plot_train.py -a offpac --env BreakoutNoFrameskip-v4 -f logs  --ids 1 3 4
 
 # python3 scripts/plot_train.py -a offpac --env CartPole-v0 -f logs  
+
+
+# python3 train.py --algo offpac --env BreakoutNoFrameskip-v4 --seed 2444558281 -params KL:True     

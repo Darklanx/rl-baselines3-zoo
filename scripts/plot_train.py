@@ -69,7 +69,7 @@ for folder in dirs:
         print(f"No data available for {folder}")
         continue
     x, _ = ts2xy(data_frame, x_axis)
-
+    print(x)
     # Do not plot the smoothed curve at all if the timeseries is shorter than window size.
     if x.shape[0] >= args.episode_window:
         # Compute and plot rolling mean with window of size args.episode_window

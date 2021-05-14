@@ -4,26 +4,51 @@ atari:
   frame_stack: 4
   policy: 'CnnPolicy'
   n_envs: 16
+  batch_size: 32
+  buffer_size: 4096
   n_timesteps: !!float 1e7
-  ent_coef: 0.01
+  target_update_interval: 1
+  gradient_steps: 3
+  behav_update_interval: 256
+  tau: 0.5
+  learning_starts: 10000
+  train_freq: (500, step)
   vf_coef: 0.25
-  policy_kwargs: "dict(optimizer_class=RMSpropTFLike, optimizer_kwargs=dict(eps=1e-5))"
+  exploration_final_eps: 0.0
+  exploration_fraction: 0.2
+  exploration_initial_eps: 0.5
+  max_alpha: 50
+  reg_coef: 0.01
+  ent_coef: 0.01
+  # policy_kwargs: "dict(optimizer_class=RMSpropTFLike, optimizer_kwargs=dict(eps=1e-5))"
 
 # Almost Tuned
-CartPole-v1:
+CartPole-v0:
+  normalize: false
   n_timesteps: !!float 5e5
   ent_coef: 0.0
   policy: 'MlpPolicy'
-  learning_rate: !!float 1e-4
-  batch_size: 64
-  buffer_size: 100000
-  learning_starts: 5000
+  learning_rate: !!float 9e-4
+  batch_size: 50
+  buffer_size: 100
+  target_update_interval: 1
+  tau: 0.2
+  vf_coef: 0.25
+  behav_update_interval: 50
+  learning_starts: 1000
   gamma: 0.99
-  train_freq: 256
-  gradient_steps: 128
+  train_freq: (5, episode)
+  n_envs: 5
+  gradient_steps: 1
+  exploration_final_eps: 0.05
+  exploration_fraction: 0.3
+  exploration_initial_eps: 0.3
+  max_alpha: 5
+  reg_coef: 0.0005
   #exploration_fraction: 0.16
   #exploration_final_eps: 0.04
-  policy_kwargs: "dict(net_arch=[64, 64])"
+  # policy_kwargs: "dict(net_arch=[64, 64])"
+  policy_kwargs: "dict(net_arch=[128, 128])"
 
 
 LunarLander-v2:
@@ -38,22 +63,23 @@ LunarLander-v2:
 MountainCar-v0:
   normalize: true
   policy: 'MlpPolicy'
-  n_timesteps: !!float 1.2e6
+  n_timesteps: !!float 3e6
   learning_rate: !!float 7e-4
   batch_size: 16
-  buffer_size: 20
-  learning_starts: 200
+  buffer_size: 1024
+  learning_starts: 1000
   gamma: 0.99
-  train_freq: (5, episode)
-  tau: 0.5
-  target_update_interval: 1000
+  train_freq: (10, episode)
+  # train_freq: (200, step)
+  tau: 0.8
+  target_update_interval: 1
+  behav_update_interval: 100
   n_envs: 16
   exploration_final_eps: 0.05
-  exploration_fraction: 0.1
-  exploration_initial_eps: 0.3
+  exploration_fraction: 0.3
+  exploration_initial_eps: 1
   gradient_steps: 1
   vf_coef: 0.5
-
   policy_kwargs: "dict(net_arch=[128, 128])"
 
 

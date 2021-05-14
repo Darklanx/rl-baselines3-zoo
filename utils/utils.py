@@ -354,6 +354,7 @@ class StoreDict(argparse.Action):
         for arguments in values:
             key = arguments.split(":")[0]
             value = ":".join(arguments.split(":")[1:])
+            print(value)
             # Evaluate the string as python code
             arg_dict[key] = eval(value)
         setattr(namespace, self.dest, arg_dict)
