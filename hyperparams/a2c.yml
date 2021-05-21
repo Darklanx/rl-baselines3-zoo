@@ -9,6 +9,12 @@ atari:
   vf_coef: 0.25
   policy_kwargs: "dict(optimizer_class=RMSpropTFLike, optimizer_kwargs=dict(eps=1e-5))"
 
+CartPole-v0:
+  n_envs: 8
+  n_timesteps: !!float 5e5
+  policy: 'MlpPolicy'
+  ent_coef: 0.0
+
 CartPole-v1:
   n_envs: 8
   n_timesteps: !!float 5e5
@@ -17,7 +23,7 @@ CartPole-v1:
 
 LunarLander-v2:
   n_envs: 8
-  n_timesteps: !!float 2e5
+  n_timesteps: !!float 1e7
   policy: 'MlpPolicy'
   gamma: 0.995
   n_steps: 5
