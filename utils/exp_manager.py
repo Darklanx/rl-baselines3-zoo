@@ -62,6 +62,7 @@ class ExperimentManager(object):
         n_jobs: int = 1,
         sampler: str = "tpe",
         pruner: str = "median",
+        use_min_atar: bool = False,
         n_startup_trials: int = 0,
         n_evaluations: int = 1,
         truncate_last_trajectory: bool = False,
@@ -84,6 +85,7 @@ class ExperimentManager(object):
         self.env_wrapper = None
         self.frame_stack = None
         self.seed = seed
+        self.use_min_atar = use_min_atar
 
         self.vec_env_class = {"dummy": DummyVecEnv, "subproc": SubprocVecEnv}[vec_env_type]
 
@@ -103,8 +105,10 @@ class ExperimentManager(object):
         self.trained_agent = trained_agent
         self.continue_training = trained_agent.endswith(".zip") and os.path.isfile(trained_agent)
         self.truncate_last_trajectory = truncate_last_trajectory
-
-        self._is_atari = self.is_atari(env_id)
+        if not self.use_min_atar:
+            self._is_atari = self.is_atari(env_id)
+        else:
+            self._is_atari = True
         # Hyperparameter optimization config
         self.optimize_hyperparameters = optimize_hyperparameters
         self.storage = storage
@@ -488,8 +492,9 @@ class ExperimentManager(object):
 
         monitor_kwargs = {}
         # Special case for GoalEnvs: log success rate too
-        if "Neck" in self.env_id or self.is_robotics_env(self.env_id) or "parking-v0" in self.env_id:
-            monitor_kwargs = dict(info_keywords=("is_success",))
+        if not self.use_min_atar:
+            if "Neck" in self.env_id or self.is_robotics_env(self.env_id) or "parking-v0" in self.env_id:
+                monitor_kwargs = dict(info_keywords=("is_success",))
 
         # On most env, SubprocVecEnv does not help and is quite memory hungry
         # therefore we use DummyVecEnv by default
@@ -503,6 +508,7 @@ class ExperimentManager(object):
             vec_env_cls=self.vec_env_class,
             vec_env_kwargs=self.vec_env_kwargs,
             monitor_kwargs=monitor_kwargs,
+            use_min_atar=self.use_min_atar
         )
 
         # Wrap the env into a VecNormalize wrapper if needed

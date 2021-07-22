@@ -1,6 +1,6 @@
 atari:
-  env_wrapper:
-    - stable_baselines3.common.atari_wrappers.AtariWrapper
+  # env_wrapper:
+    # - stable_baselines3.common.atari_wrappers.AtariWrapper
   frame_stack: 4
   policy: 'CnnPolicy'
   n_timesteps: !!float 1e7
@@ -14,6 +14,28 @@ atari:
   exploration_fraction: 0.1
   exploration_final_eps: 0.01
   optimize_memory_usage: True
+
+breakout:
+  policy: 'CnnPolicy'
+  learning_rate: !!float 1e-4
+  n_timesteps: !!float 5e5
+  train_freq: 4
+  exploration_fraction: 0.1
+  exploration_final_eps: 0.01
+  target_update_interval: 1000
+  batch_size: 32
+  buffer_size: 10000
+
+asterix:
+  policy: 'CnnPolicy'
+  learning_rate: !!float 1e-4
+  n_timesteps: !!float 5e6
+  train_freq: 4
+  exploration_fraction: 0.1
+  exploration_final_eps: 0.01
+  target_update_interval: 1000
+  batch_size: 32
+  buffer_size: 10000
 
 # Almost Tuned
 CartPole-v1:

@@ -199,29 +199,31 @@ def sample_sac_params(trial: optuna.Trial) -> Dict[str, Any]:
 
 def sample_offpac_params(trial: optuna.Trial) -> Dict[str, Any]:
     """
-    Sampler for SAC hyperparams.
+    Sampler for offpac hyperparams.
 
     :param trial:
     :return:
     """
     # gamma = trial.suggest_categorical("gamma", [0.9, 0.95, 0.98, 0.99, 0.995, 0.999, 0.9999])
     learning_rate = trial.suggest_loguniform("lr", 1e-5, 1)
-    batch_size = trial.suggest_categorical("batch_size", [16, 32, 64, 128, 256, 512, 1024])
-    # buffer_size = trial.suggest_categorical("buffer_size", [int(1e4), int(1e5), int(1e6)])
-    learning_starts = trial.suggest_categorical("learning_starts", [1, 1000, 10000, 20000])
+    batch_size = trial.suggest_categorical("batch_size", [32, 64, 128])
+    buffer_size = trial.suggest_categorical("buffer_size", [64, 128 ,1024, 2048])
+    # learning_starts = trial.suggest_categorical("learning_starts", [1, 1000, 10000, 20000])
     # train_freq = trial.suggest_categorical('train_freq', [1, 10, 100, 300])
-    train_freq = trial.suggest_categorical("train_freq", [8, 16, 32, 64, 128, 256, 512])
-    
+    train_freq = trial.suggest_categorical("train_freq", [8, 16, 32, 64, 128])
+    behav_update_interval = trial.suggest_categorical("behav_update_interval", [1, 16, 32])
+    max_grad_norm = trial.suggest_categorical("max_grad_norm", [0.3, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 5])
     # exploration
-    exploration_initial_eps = trial.suggest_categorical('exploration_initial_eps', [0.1 * i+1 for i in range(9)])
-    exploration_fraction = trial.suggest_categorical('exploration_fraction', [0.1 * i+1 for i in range(9)])
+    exploration_initial_eps = trial.suggest_categorical('exploration_initial_eps', [0.1 * i for i in range(3)])
+    exploration_fraction = trial.suggest_loguniform('exploration_fraction', 0.1, 1)
+    reg_coef = trial.suggest_loguniform("reg_coef", 0.00000001, 0.1)
     vf_coef = trial.suggest_categorical('vf_coef', [0.1 * i+1 for i in range(9)])
     
 
     
     # Polyak coeff
     
-    tau = trial.suggest_categorical("tau", [0.005, 0.01, 0.02, 0.05, 0.1, 0.3, 0.5])
+    # tau = trial.suggest_categorical("tau", [0.005, 0.01, 0.02, 0.05, 0.1, 0.3, 0.5])
     # gradient_steps takes too much time
     # gradient_steps = trial.suggest_categorical('gradient_steps', [1, 100, 300])
     # gradient_steps = train_freq
@@ -229,16 +231,16 @@ def sample_offpac_params(trial: optuna.Trial) -> Dict[str, Any]:
     # You can comment that out when not using gSDE
     # log_std_init = trial.suggest_uniform("log_std_init", -4, 1)
     # NOTE: Add "verybig" to net_arch when tuning HER
-    net_arch = trial.suggest_categorical("net_arch", ["small", "medium", "big"])
+    # net_arch = trial.suggest_categorical("net_arch", ["small", "medium", "big"])
     # activation_fn = trial.suggest_categorical('activation_fn', [nn.Tanh, nn.ReLU, nn.ELU, nn.LeakyReLU])
 
-    net_arch = {
-        "small": [64, 64],
-        "medium": [256, 256],
-        "big": [400, 300],
-        # Uncomment for tuning HER
-        # "verybig": [256, 256, 256],
-    }[net_arch]
+    # net_arch = {
+    #     "small": [64, 64],
+    #     "medium": [256, 256],
+    #     "big": [400, 300],
+    #     # Uncomment for tuning HER
+    #     # "verybig": [256, 256, 256],
+    # }[net_arch]
 
     # target_entropy = "auto"
     # if ent_coef == 'auto':
@@ -249,16 +251,18 @@ def sample_offpac_params(trial: optuna.Trial) -> Dict[str, Any]:
         # "gamma": gamma,
         "learning_rate": learning_rate,
         "batch_size": batch_size,
-        # "buffer_size": buffer_size,
-        "learning_starts": learning_starts,
+        "buffer_size": buffer_size,
+        "max_grad_norm": max_grad_norm,
+        # "learning_starts": learning_starts,
         "train_freq": train_freq,
         "exploration_fraction": exploration_fraction,
         "exploration_initial_eps": exploration_initial_eps,
         "vf_coef": vf_coef,
+        "reg_coef": reg_coef,
         # "gradient_steps": gradient_steps,
-        "tau": tau,
+        # "tau": tau,
         # "target_entropy": target_entropy,
-        "policy_kwargs": dict(net_arch=net_arch),
+        # "policy_kwargs": dict(net_arch=net_arch),
     }
 
 

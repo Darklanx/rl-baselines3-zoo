@@ -68,6 +68,10 @@ if __name__ == "__main__":  # noqa: C901
         default="median",
         choices=["halving", "median", "none"],
     )
+    parser.add_argument(
+        "-min", "--use_min_atar",
+        action="store_true"
+    )
     parser.add_argument("--n-startup-trials", help="Number of trials before using optuna sampler", type=int, default=10)
     parser.add_argument("--n-evaluations", help="Number of evaluations for hyperparameter optimization", type=int, default=20)
     parser.add_argument(
@@ -102,7 +106,9 @@ if __name__ == "__main__":  # noqa: C901
 
     env_id = args.env
     registered_envs = set(gym.envs.registry.env_specs.keys())  # pytype: disable=module-attr
-
+    registered_envs.add('breakout')
+    registered_envs.add('freeway')
+    registered_envs.add('asterix')
     # If the environment is not found, suggest the closest match
     if env_id not in registered_envs:
         try:
@@ -153,6 +159,7 @@ if __name__ == "__main__":  # noqa: C901
         args.n_jobs,
         args.sampler,
         args.pruner,
+        args.use_min_atar,
         n_startup_trials=args.n_startup_trials,
         n_evaluations=args.n_evaluations,
         truncate_last_trajectory=args.truncate_last_trajectory,
@@ -161,7 +168,7 @@ if __name__ == "__main__":  # noqa: C901
         log_interval=args.log_interval,
         save_replay_buffer=args.save_replay_buffer,
         verbose=args.verbose,
-        vec_env_type=args.vec_env,
+        vec_env_type=args.vec_env
     )
 
     # Prepare experiment and launch hyperparameter optimization if needed

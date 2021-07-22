@@ -1,6 +1,6 @@
 atari:
-  env_wrapper:
-    - stable_baselines3.common.atari_wrappers.AtariWrapper
+  # env_wrapper:
+    # - stable_baselines3.common.atari_wrappers.AtariWrapper
   frame_stack: 4
   policy: 'CnnPolicy'
   n_envs: 16
@@ -9,15 +9,37 @@ atari:
   vf_coef: 0.25
   policy_kwargs: "dict(optimizer_class=RMSpropTFLike, optimizer_kwargs=dict(eps=1e-5))"
 
+breakout:
+  policy: 'CnnPolicy'
+  n_timesteps: !!float 1e7
+  learning_rate: 0.0035601310653035046
+  ent_coef: 0.06111092363007107
+  n_envs: 64
+  vf_coef: 0.18508456498524453
+  n_steps: 16
+  gae_lambda: 0.99
+  use_rms_prop: True
+  normalize_advantage: False
+  gamma: 0.995
+  max_grad_norm: 0.7
+  policy_kwargs: "dict(net_arch=[dict(pi=[256, 256], vf=[256, 256])], activation_fn=nn.ReLU)"
+
+asterix:
+  policy: 'CnnPolicy'
+  n_timesteps: !!float 5e6
+  n_envs: 64
+  vf_coef: 0.25
+
+
 CartPole-v0:
   n_envs: 8
-  n_timesteps: !!float 5e5
+  n_timesteps: !!float 5e6
   policy: 'MlpPolicy'
   ent_coef: 0.0
 
 CartPole-v1:
   n_envs: 8
-  n_timesteps: !!float 5e5
+  n_timesteps: !!float 5e6
   policy: 'MlpPolicy'
   ent_coef: 0.0
 
