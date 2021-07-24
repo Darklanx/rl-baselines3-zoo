@@ -14,7 +14,7 @@ from optuna.integration.skopt import SkoptSampler
 from optuna.pruners import BasePruner, MedianPruner, SuccessiveHalvingPruner
 from optuna.samplers import BaseSampler, RandomSampler, TPESampler
 from stable_baselines3.common.base_class import BaseAlgorithm
-from stable_baselines3.common.callbacks import BaseCallback, CheckpointCallback, EvalCallback
+from stable_baselines3.common.callbacks import BaseCallback, CheckpointCallback, EvalCallback, CustomCallback
 from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3.common.noise import NormalActionNoise, OrnsteinUhlenbeckActionNoise
 from stable_baselines3.common.preprocessing import is_image_space, is_image_space_channels_first
@@ -155,7 +155,7 @@ class ExperimentManager(object):
         env = self.create_envs(self.n_envs, no_log=False)
 
         self._hyperparams = self._preprocess_action_noise(hyperparams, saved_hyperparams, env)
-
+        self._hyperparams["save_path"] = self.save_path
         if self.continue_training:
             model = self._load_pretrained_agent(self._hyperparams, env)
         elif self.optimize_hyperparameters:
@@ -425,6 +425,7 @@ class ExperimentManager(object):
             )
 
             self.callbacks.append(eval_callback)
+
 
     @staticmethod
     def is_atari(env_id: str) -> bool:
