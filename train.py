@@ -4,7 +4,7 @@ import importlib
 import os
 import uuid
 import sys
-sys.path.insert(0, "/home/darklanx/stable-baselines3")
+sys.path.insert(0, "/home/darklanx/Desktop/stable-baselines3")
 import gym
 import numpy as np
 import seaborn
@@ -41,7 +41,7 @@ if __name__ == "__main__":  # noqa: C901
     parser.add_argument(
         "--eval-freq", help="Evaluate the agent every n steps (if negative, no evaluation)", default=10000, type=int
     )
-    parser.add_argument("--eval-episodes", help="Number of episodes to use for evaluation", default=5, type=int)
+    parser.add_argument("--eval-episodes", help="Number of episodes to use for evaluation", default=100, type=int)
     parser.add_argument("--save-freq", help="Save the model every n steps (if negative, no checkpoint)", default=-1, type=int)
     parser.add_argument(
         "--save-replay-buffer", help="Save the replay buffer too (when applicable)", action="store_true", default=False
