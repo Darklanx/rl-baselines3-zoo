@@ -55,54 +55,55 @@ freeway:
   n_timesteps: !!float 5e6
   policy: 'CnnPolicy'
   gamma: 0.995
-  train_freq: (8, step)
+  train_freq: (128, step)
   # train_freq: (1, episode)
-  learning_rate: 0.03737560102436495
+  learning_rate: 0.00010130096573946154
   # learning_rate: !!float 1e-3
   tau: 0.05
   target_update_interval: 1
   behav_tau: 1
   batch_size: 128
-  behav_update_interval: 32
+  behav_update_interval: 16
   gradient_steps: 30
-  buffer_size: 512
+  buffer_size: 1100
   max_alpha: 50
   learning_starts: 100
-  n_envs: 16
-  vf_coef: 0.25
-  exploration_final_eps: 0.05
-  exploration_fraction: 0.5
-  exploration_initial_eps: 1
+  n_envs: 64
+  vf_coef: 1.6
+  exploration_final_eps: 0.01
+  exploration_fraction: 0.4
+  exploration_initial_eps: 0.2
   ent_coef: 0
-  reg_coef: 0.027386504290934345
-  max_grad_norm: 0.8
+  reg_coef: 0.00014087191261145392
+  max_grad_norm: 2
   policy_kwargs: "dict(net_arch=[128])"
 
 asterix:
   n_timesteps: !!float 5e6
   policy: 'CnnPolicy'
   gamma: 0.995
-  train_freq: (5, step)
+  train_freq: (128, step)
   # train_freq: (1, episode)
-  learning_rate: lin_0.00083
-  # learning_rate: !!float 1e-3
+  # learning_rate: lin_0.00083
+  learning_rate: 0.0019909776588571872
   tau: 0.05
   target_update_interval: 1
   behav_tau: 1
   batch_size: 16
-  behav_update_interval: 100
-  buffer_size: 6400
+  behav_update_interval: 16
+  buffer_size: 1100
   gradient_steps: 30
   max_alpha: 50
   learning_starts: 100
   n_envs: 64
   vf_coef: 0.25
-  exploration_final_eps: 0.05
-  exploration_fraction: 0.3
-  exploration_initial_eps: 0.3
+  exploration_final_eps: 0.01
+  exploration_fraction: 0.4
+  exploration_initial_eps: 0.2
   ent_coef: 0
-  reg_coef: 0
+  reg_coef: 1.009609914326463e-07
   policy_kwargs: "dict(net_arch=[128])" 
+  max_grad_norm: 0.8
   
 CartPole-v0:
   normalize: false

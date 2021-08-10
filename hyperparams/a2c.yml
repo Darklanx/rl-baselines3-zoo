@@ -1,9 +1,9 @@
 atari:
   # env_wrapper:
     # - stable_baselines3.common.atari_wrappers.AtariWrapper
-  frame_stack: 4
+  frame_stack: 1
   policy: 'CnnPolicy'
-  n_envs: 16
+  n_envs: 64
   n_timesteps: !!float 1e7
   ent_coef: 0.01
   vf_coef: 0.25
@@ -30,6 +30,24 @@ asterix:
   n_envs: 64
   vf_coef: 0.25
 
+freeway:
+  policy: 'CnnPolicy'
+  n_timesteps: !!float 5e6
+  n_envs: 256
+  vf_coef: 0.025605483030381557
+  gamma: 0.99
+  learning_rate: 0.002313920968340922
+  max_grad_norm: 0.7
+  use_rms_prop: True
+  ent_coef: 0.0007166116023238496
+  gae_lambda: 0.9
+  normalize_advantage: False
+  n_steps: 32
+  policy_kwargs: dict(
+            net_arch=[dict(pi=[64, 64], vf=[64, 64])],
+            activation_fn=nn.Tanh,
+            ortho_init=False,
+        )
 
 CartPole-v0:
   n_envs: 8

@@ -155,7 +155,8 @@ class ExperimentManager(object):
         env = self.create_envs(self.n_envs, no_log=False)
 
         self._hyperparams = self._preprocess_action_noise(hyperparams, saved_hyperparams, env)
-        self._hyperparams["save_path"] = self.save_path
+        if self.algo == 'offpac':
+            self._hyperparams["save_path"] = self.save_path
         if self.continue_training:
             model = self._load_pretrained_agent(self._hyperparams, env)
         elif self.optimize_hyperparameters:
