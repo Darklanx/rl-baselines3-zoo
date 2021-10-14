@@ -37,6 +37,9 @@ parser.add_argument("--no-million", action="store_true", default=False, help="Do
 parser.add_argument("--smooth", help="smooth y axis with window size args.smooth", type=int, default=-1)
 args = parser.parse_args()
 
+if not os.path.isdir("./evals"):
+    os.mkdir("./evals")
+
 
 
 # Activate seaborn
@@ -100,7 +103,10 @@ for env in envs:
                 else:
                     plt.plot(log["timesteps"][0:args.max_timesteps], log["results"].mean(axis=1)[:args.max_timesteps], label=dir_.split("/")[-1])
             plt.legend()
-            plt.savefig(f"evals/{env}_eval.png")           
+            if not os.path.isdir(f"./evals/{env}"):
+                os.makedirs(f"./evals/{env}")
+            
+            plt.savefig(f"evals/{env}/{algo}_eval.png")           
 
 
 
@@ -157,4 +163,5 @@ for folder in dirs:
 
 # plt.legend()
 plt.tight_layout()
-plt.savefig(f"evals/{env}_train.png")
+
+plt.savefig(f"evals/{env}/{algo}_train.png")
