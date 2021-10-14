@@ -1,17 +1,22 @@
 atari:
-  env_wrapper:
-    - stable_baselines3.common.atari_wrappers.AtariWrapper
-  frame_stack: 4
+  # env_wrapper:
+    # - stable_baselines3.common.atari_wrappers.AtariWrapper
+  # frame_stack: 4
+  # policy: 'MlpPolicy'
   policy: 'CnnPolicy'
   n_envs: 8
-  n_steps: 128
-  n_epochs: 4
-  batch_size: 256
-  n_timesteps: !!float 1e7
+  n_steps: 256
+  n_epochs: 10
+  batch_size: 16
+  n_timesteps: !!float 1e6
   learning_rate: lin_2.5e-4
   clip_range: lin_0.1
-  vf_coef: 0.5
-  ent_coef: 0.01
+  gamma: 0.98
+  ent_coef: 4.04497635826383e-06
+  gae_lambda: 0.92
+  max_grad_norm: 0.5
+  vf_coef: 0.3860821444162465
+
 
 Pendulum-v0:
   n_envs: 8

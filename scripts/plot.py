@@ -35,6 +35,7 @@ parser.add_argument("-w", "--episode-window", help="Rolling window size", type=i
 parser.add_argument("-l", "--labels", help="Label for each folder", nargs="+", type=str)
 parser.add_argument("--no-million", action="store_true", default=False, help="Do not convert x-axis to million")
 parser.add_argument("--smooth", help="smooth y axis with window size args.smooth", type=int, default=-1)
+parser.add_argument("--avg", action='store_true')
 args = parser.parse_args()
 
 if not os.path.isdir("./evals"):
@@ -83,10 +84,12 @@ for env in envs:
                     if (env in d and os.path.isdir(os.path.join(log_path, d)))
                 ]
 
-
+            logs = []
             for _, dir_ in enumerate(dirs):
+
                 try:
                     log = np.load(os.path.join(dir_, "evaluations.npz"))
+                    logs.append(log)
                 except FileNotFoundError:
                     print("Eval not found for", dir_)
                     continue
@@ -96,12 +99,18 @@ for env in envs:
                     print(item.shape)
                 '''
                 # log["results"] is evaled multiple times at given timestep, so take mean along axis=1
-                if args.smooth != -1:
-                    y = savgol_filter(log['results'].mean(axis=1), args.smooth, 3) # window size args.smooth polynomial order 3
+                if not args.avg:
+                    if args.smooth != -1:
+                        y = savgol_filter(log['results'].mean(axis=1), args.smooth, 3) # window size args.smooth polynomial order 3
 
-                    plt.plot(log["timesteps"][0:args.max_timesteps], y[:args.max_timesteps], label=dir_.split("/")[-1])
-                else:
-                    plt.plot(log["timesteps"][0:args.max_timesteps], log["results"].mean(axis=1)[:args.max_timesteps], label=dir_.split("/")[-1])
+                        plt.plot(log["timesteps"][0:args.max_timesteps], y[:args.max_timesteps], label=dir_.split("/")[-1])
+                    else:
+                        plt.plot(log["timesteps"][0:args.max_timesteps], log["results"].mean(axis=1)[:args.max_timesteps], label=dir_.split("/")[-1])
+            print(logs[0]['timesteps'].shape)
+            if args.avg:
+                timesteps = np.mean([_log['timesteps'] for _log in logs], axis=0)
+                results = np.mean([_log['results'].mean(axis=1) for _log in logs], axis=0)
+                plt.plot(timesteps[0:args.max_timesteps], results[:args.max_timesteps])
             plt.legend()
             if not os.path.isdir(f"./evals/{env}"):
                 os.makedirs(f"./evals/{env}")

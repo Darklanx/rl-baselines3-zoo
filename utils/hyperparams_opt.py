@@ -206,16 +206,16 @@ def sample_offpac_params(trial: optuna.Trial) -> Dict[str, Any]:
     """
     # gamma = trial.suggest_categorical("gamma", [0.9, 0.95, 0.98, 0.99, 0.995, 0.999, 0.9999])
     learning_rate = trial.suggest_loguniform("lr", 1e-5, 1)
-    # batch_size = trial.suggest_categorical("batch_size", [32, 64, 128])
-    # buffer_size = trial.suggest_categorical("buffer_size", [64, 128 ,1024, 2048])
-    # learning_starts = trial.suggest_categorical("learning_starts", [1, 1000, 10000, 20000])
-    # train_freq = trial.suggest_categorical('train_freq', [1, 10, 100, 300])
+
+    batch_size = trial.suggest_categorical("batch_size", [32, 64, 128])
+    buffer_size = trial.suggest_categorical("buffer_size", [64, 128 ,1024, 2048])
+    # learning_starts = trial.suggest_categorical("learning_starts", [1, 1000, 10000, 20000]) 
     train_freq = trial.suggest_categorical("train_freq", [8, 16, 32, 64, 128])
-    # behav_update_interval = trial.suggest_categorical("behav_update_interval", [1, 16, 32])
+    behav_update_interval = trial.suggest_categorical("behav_update_interval", [16, 32, 64, 128])
     max_grad_norm = trial.suggest_categorical("max_grad_norm", [0.3, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 5])
     # exploration
-    exploration_initial_eps = trial.suggest_categorical('exploration_initial_eps', [0.1 * i for i in range(3)])
-    # exploration_fraction = trial.suggest_loguniform('exploration_fraction', 0.1, 1)
+    exploration_initial_eps = trial.suggest_categorical('exploration_initial_eps', [0.1 * i for i in range(6)])
+    exploration_fraction = trial.suggest_loguniform('exploration_fraction', 0.1, 1)
     reg_coef = trial.suggest_loguniform("reg_coef", 0.00000001, 0.1)
     vf_coef = trial.suggest_categorical('vf_coef', [0.1 * i+1 for i in range(9)])
     
@@ -223,9 +223,10 @@ def sample_offpac_params(trial: optuna.Trial) -> Dict[str, Any]:
     
     # Polyak coeff
     
-    # tau = trial.suggest_categorical("tau", [0.005, 0.01, 0.02, 0.05, 0.1, 0.3, 0.5])
+    tau = trial.suggest_categorical("tau", [0.005, 0.01, 0.02, 0.05, 0.1, 0.3, 0.5])
+    behav_tau = trial.suggest_categorical("behav_tau", [0.005, 0.01, 0.02, 0.05, 0.1, 0.3, 0.5])
     # gradient_steps takes too much time
-    # gradient_steps = trial.suggest_categorical('gradient_steps', [1, 100, 300])
+    gradient_steps = trial.suggest_categorical('gradient_steps', [1, 30, 100])
     # gradient_steps = train_freq
     # ent_coef = trial.suggest_categorical('ent_coef', ['auto', 0.5, 0.1, 0.05, 0.01, 0.0001])
     # You can comment that out when not using gSDE
@@ -260,7 +261,8 @@ def sample_offpac_params(trial: optuna.Trial) -> Dict[str, Any]:
         "vf_coef": vf_coef,
         "reg_coef": reg_coef,
         # "gradient_steps": gradient_steps,
-        # "tau": tau,
+        "tau": tau,
+        "behav_tau": behav_tau
         # "target_entropy": target_entropy,
         # "policy_kwargs": dict(net_arch=net_arch),
     }

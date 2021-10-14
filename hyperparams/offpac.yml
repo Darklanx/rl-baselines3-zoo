@@ -25,6 +25,32 @@ atari:
   # policy_kwargs: "dict(net_arch=[128, 128])"
   # policy_kwargs: "dict(optimizer_class=RMSpropTFLike, optimizer_kwargs=dict(eps=1e-5))"
 
+MiniGrid-SimpleCrossingS9N1-v0:
+  env_wrapper: 
+    - gym_minigrid.wrappers.FlatObsWrapper
+    - gym_minigrid.wrappers.NoiseWrapper:
+        std: 0.1
+  n_envs: 64
+  n_timesteps: !!float 5e6
+  learning_rate: 0.00010130096573946154
+  policy: 'MlpPolicy'
+  tau: 0.05
+  gamma: 0.995
+  target_update_interval: 1
+  behav_tau: 1
+  batch_size: 128
+  behav_update_interval: 16
+  exploration_final_eps: 0.01
+  exploration_fraction: 0.4
+  exploration_initial_eps: 0.2
+  gradient_steps: 30
+  max_alpha: 50
+  max_grad_norm: 2
+  buffer_size: 1100
+  train_freq: (128, step)
+
+
+
 breakout:
   n_timesteps: !!float 5e5
   policy: 'CnnPolicy'
@@ -55,7 +81,7 @@ freeway:
   n_timesteps: !!float 5e6
   policy: 'CnnPolicy'
   gamma: 0.995
-  train_freq: (128, step)
+  train_freq: (8, step)
   # train_freq: (1, episode)
   learning_rate: 0.00010130096573946154
   # learning_rate: !!float 1e-3
@@ -86,6 +112,7 @@ asterix:
   # train_freq: (1, episode)
   # learning_rate: lin_0.00083
   learning_rate: 0.0019909776588571872
+  # learning_rate: !!float 1e-3
   tau: 0.05
   target_update_interval: 1
   behav_tau: 1
