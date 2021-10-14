@@ -27,7 +27,7 @@ parser.add_argument("-e", "--env", help="Environment to include", type=str, requ
 parser.add_argument("-f", "--exp-folder", help="Folders to include", type=str, default="logs")
 parser.add_argument("-ids", "--ids", help="indexes of the experiment", nargs="+", type=int)
 parser.add_argument("--figsize", help="Figure size, width, height in inches.", nargs=2, type=int, default=[6.4, 4.8])
-parser.add_argument("--fontsize", help="Font size", type=int, default=14)
+parser.add_argument("--fontsize", help="Font size", type=int, default=6)
 parser.add_argument("-max", "--max-timesteps", help="Max number of timesteps to display", type=int)
 parser.add_argument("-x", "--x-axis", help="X-axis", choices=["steps", "episodes", "time"], type=str, default="steps")
 parser.add_argument("-y", "--y-axis", help="Y-axis", choices=["success", "reward"], type=str, default="reward")
@@ -100,7 +100,7 @@ for env in envs:
                 else:
                     plt.plot(log["timesteps"][0:args.max_timesteps], log["results"].mean(axis=1)[:args.max_timesteps], label=dir_.split("/")[-1])
             plt.legend()
-            plt.savefig("eval.png")           
+            plt.savefig(f"evals/{env}_eval.png")           
 
 
 
@@ -155,6 +155,6 @@ for folder in dirs:
         # print(x)
         plt.plot(x, y_mean, linewidth=1.5, label=folder.split("/")[-1])
 
-plt.legend()
+# plt.legend()
 plt.tight_layout()
-plt.savefig(f"{env}.png")
+plt.savefig(f"evals/{env}_train.png")
