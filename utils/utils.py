@@ -180,6 +180,7 @@ def create_test_env(
     should_render: bool = True,
     hyperparams: Optional[Dict[str, Any]] = None,
     env_kwargs: Optional[Dict[str, Any]] = None,
+    use_min_atar=False
 ) -> VecEnv:
     """
     Create environment for testing a trained agent
@@ -207,11 +208,13 @@ def create_test_env(
 
     vec_env_kwargs = {}
     vec_env_cls = DummyVecEnv
+    '''
     if n_envs > 1 or (ExperimentManager.is_bullet(env_id) and should_render):
         # HACK: force SubprocVecEnv for Bullet env
         # as Pybullet envs does not follow gym.render() interface
         vec_env_cls = SubprocVecEnv
         # start_method = 'spawn' for thread safe
+    '''
 
     env = make_vec_env(
         env_id,
@@ -222,6 +225,7 @@ def create_test_env(
         env_kwargs=env_kwargs,
         vec_env_cls=vec_env_cls,
         vec_env_kwargs=vec_env_kwargs,
+        use_min_atar=use_min_atar
     )
 
     # Load saved stats for normalizing input and rewards
