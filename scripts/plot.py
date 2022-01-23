@@ -1,6 +1,7 @@
-from stable_baselines3.common import results_plotter
-import os
 
+import os, sys
+sys.path.insert(0, "/home/nycucpu1/stable-baselines3")
+from stable_baselines3.common import results_plotter
 import gym
 import numpy as np
 import argparse

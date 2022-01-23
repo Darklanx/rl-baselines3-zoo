@@ -52,7 +52,33 @@ MiniGrid-SimpleCrossingS9N1-v0:
 
 
 breakout:
-  n_timesteps: !!float 5e6
+  n_timesteps: !!float 3e6
+  policy: 'CnnPolicy'
+  gamma: 0.995
+  train_freq: (5, step)
+  # train_freq: (1, episode)
+  learning_rate: lin_0.00083
+  # learning_rate: !!float 1e-3
+  tau: 0.05
+  target_update_interval: 1
+  behav_tau: 1
+  batch_size: 16
+  behav_update_interval: 100
+  buffer_size: 6400
+  gradient_steps: 30
+  max_alpha: 50
+  learning_starts: 100
+  n_envs: 32
+  vf_coef: 0.25
+  exploration_final_eps: 0.05
+  exploration_fraction: 0.3
+  exploration_initial_eps: 0.3
+  ent_coef: 0
+  reg_coef: 0
+  policy_kwargs: "dict(net_arch=[128])"
+
+space_invaders:
+  n_timesteps: !!float 3e6
   policy: 'CnnPolicy'
   gamma: 0.995
   train_freq: (5, step)
@@ -78,7 +104,7 @@ breakout:
   policy_kwargs: "dict(net_arch=[128])"
 
 freeway:
-  n_timesteps: !!float 5e6
+  n_timesteps: !!float 3e6
   policy: 'CnnPolicy'
   gamma: 0.995
   train_freq: (8, step)
@@ -94,7 +120,7 @@ freeway:
   buffer_size: 1100
   max_alpha: 50
   learning_starts: 100
-  n_envs: 64
+  n_envs: 32
   vf_coef: 1.6
   exploration_final_eps: 0.01
   exploration_fraction: 0.4

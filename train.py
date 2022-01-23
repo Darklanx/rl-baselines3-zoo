@@ -4,7 +4,7 @@ import importlib
 import os
 import uuid
 import sys
-sys.path.insert(0, "/home/darklanx/stable-baselines3")
+sys.path.insert(0, "/home/nycucpu1/stable-baselines3")
 import gym
 import numpy as np
 import seaborn
@@ -110,6 +110,7 @@ if __name__ == "__main__":  # noqa: C901
     registered_envs.add('freeway')
     registered_envs.add('asterix')
     registered_envs.add('seaquest')
+    registered_envs.add('space_invaders')
     # If the environment is not found, suggest the closest match
     if env_id not in registered_envs:
         try:
