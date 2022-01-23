@@ -109,6 +109,7 @@ if __name__ == "__main__":  # noqa: C901
     registered_envs.add('breakout')
     registered_envs.add('freeway')
     registered_envs.add('asterix')
+    registered_envs.add('seaquest')
     # If the environment is not found, suggest the closest match
     if env_id not in registered_envs:
         try:
