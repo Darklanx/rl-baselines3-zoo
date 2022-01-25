@@ -1,6 +1,6 @@
 
 import os, sys
-sys.path.insert(0, "/home/nycucpu1/stable-baselines3")
+sys.path.insert(0, "/home/nycucpu1/minatar/stable-baselines3")
 from stable_baselines3.common import results_plotter
 import gym
 import numpy as np
@@ -25,7 +25,7 @@ from stable_baselines3.common.results_plotter import X_EPISODES, X_TIMESTEPS, X_
 parser = argparse.ArgumentParser("Gather results, plot training reward/success")
 parser.add_argument("-a", "--algo", help="Algorithm to include", type=str, required=True)
 parser.add_argument("-e", "--env", help="Environment to include", type=str, required=True)
-parser.add_argument("-f", "--exp-folder", help="Folders to include", type=str, default="logs")
+parser.add_argument("-f", "--exp-folder", help="Folders to include", type=str, default="/home/nycucpu1/minatar/rl-baselines3-zoo/logs")
 parser.add_argument("-ids", "--ids", help="indexes of the experiment", nargs="+", type=int)
 parser.add_argument("--figsize", help="Figure size, width, height in inches.", nargs=2, type=int, default=[6.4, 4.8])
 parser.add_argument("--fontsize", help="Font size", type=int, default=6)
@@ -39,8 +39,8 @@ parser.add_argument("--smooth", help="smooth y axis with window size args.smooth
 parser.add_argument("--avg", action='store_true')
 args = parser.parse_args()
 
-if not os.path.isdir("./evals"):
-    os.mkdir("./evals")
+if not os.path.isdir("/home/nycucpu1/minatar/rl-baselines3-zoo/evals"):
+    os.mkdir("/home/nycucpu1/minatar/rl-baselines3-zoo/evals")
 
 
 
@@ -113,10 +113,10 @@ for env in envs:
                 results = np.mean([_log['results'].mean(axis=1) for _log in logs], axis=0)
                 plt.plot(timesteps[0:args.max_timesteps], results[:args.max_timesteps])
             plt.legend()
-            if not os.path.isdir(f"./evals/{env}"):
-                os.makedirs(f"./evals/{env}")
+            if not os.path.isdir(f"/home/nycucpu1/minatar/rl-baselines3-zoo/evals/{env}"):
+                os.makedirs(f"/home/nycucpu1/minatar/rl-baselines3-zoo/evals/{env}")
             
-            plt.savefig(f"evals/{env}/{algo}_eval.png")           
+            plt.savefig(f"/home/nycucpu1/minatar/rl-baselines3-zoo/evals/{env}/{algo}_eval.png")           
 
 
 
@@ -174,4 +174,4 @@ for folder in dirs:
 # plt.legend()
 plt.tight_layout()
 
-plt.savefig(f"evals/{env}/{algo}_train.png")
+plt.savefig(f"/home/nycucpu1/minatar/rl-baselines3-zoo/evals/{env}/{algo}_train.png")
