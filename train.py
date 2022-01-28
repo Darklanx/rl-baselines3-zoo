@@ -41,7 +41,7 @@ if __name__ == "__main__":  # noqa: C901
     parser.add_argument(
         "--eval-freq", help="Evaluate the agent every n steps (if negative, no evaluation)", default=10000, type=int
     )
-    parser.add_argument("--eval-episodes", help="Number of episodes to use for evaluation", default=5, type=int)
+    parser.add_argument("--eval-episodes", help="Number of episodes to use for evaluation", default=100, type=int)
     parser.add_argument("--save-freq", help="Save the model every n steps (if negative, no checkpoint)", default=-1, type=int)
     parser.add_argument(
         "--save-replay-buffer", help="Save the replay buffer too (when applicable)", action="store_true", default=False
@@ -112,7 +112,7 @@ if __name__ == "__main__":  # noqa: C901
     registered_envs.add('seaquest')
     registered_envs.add('space_invaders')
     # If the environment is not found, suggest the closest match
-    time.sleep(args.seed * 10)
+    # time.sleep(args.seed * 10)
     if env_id not in registered_envs:
         try:
             closest_match = difflib.get_close_matches(env_id, registered_envs, n=1)[0]
