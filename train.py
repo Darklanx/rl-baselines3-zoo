@@ -4,7 +4,7 @@ import importlib
 import os
 import uuid
 import sys
-sys.path.insert(0, "/home/nycucpu1/minatar/stable-baselines3")
+sys.path.insert(0, "/home/darklanx/update/stable-baselines3")
 import gym
 import numpy as np
 import seaborn

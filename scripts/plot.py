@@ -1,6 +1,6 @@
 
 import os, sys
-sys.path.insert(0, "/home/nycucpu1/minatar/stable-baselines3")
+sys.path.insert(0, "/home/darklanx/update/stable-baselines3")
 from stable_baselines3.common import results_plotter
 import gym
 import numpy as np
@@ -25,7 +25,7 @@ from stable_baselines3.common.results_plotter import X_EPISODES, X_TIMESTEPS, X_
 parser = argparse.ArgumentParser("Gather results, plot training reward/success")
 parser.add_argument("-a", "--algo", help="Algorithm to include", type=str, required=True)
 parser.add_argument("-e", "--env", help="Environment to include", type=str, required=True)
-parser.add_argument("-f", "--exp-folder", help="Folders to include", type=str, default="/home/nycucpu1/minatar/rl-baselines3-zoo/logs")
+parser.add_argument("-f", "--exp-folder", help="Folders to include", type=str, default="/home/darklanx/update/rl-baselines3-zoo/logs")
 parser.add_argument("-ids", "--ids", help="indexes of the experiment", nargs="+", type=int)
 parser.add_argument("--figsize", help="Figure size, width, height in inches.", nargs=2, type=int, default=[6.4, 4.8])
 parser.add_argument("--fontsize", help="Font size", type=int, default=6)
@@ -39,8 +39,8 @@ parser.add_argument("--smooth", help="smooth y axis with window size args.smooth
 parser.add_argument("--avg", action='store_true')
 args = parser.parse_args()
 
-if not os.path.isdir("/home/nycucpu1/minatar/rl-baselines3-zoo/evals"):
-    os.mkdir("/home/nycucpu1/minatar/rl-baselines3-zoo/evals")
+if not os.path.isdir("/home/darklanx/update/rl-baselines3-zoo/evals"):
+    os.mkdir("/home/darklanx/update/rl-baselines3-zoo/evals")
 
 NPY_DIR = "/home/darklanx/rl-baselines3-zoo/npy"
 
@@ -108,16 +108,23 @@ for env in envs:
                         plt.plot(log["timesteps"][0:args.max_timesteps], y[:args.max_timesteps], label=dir_.split("/")[-1])
                     else:
                         plt.plot(log["timesteps"][0:args.max_timesteps], log["results"].mean(axis=1)[:args.max_timesteps], label=dir_.split("/")[-1])
+                    fname = dir_.split('/')[-1]
+                    save_dir = f'./npy/{algo}'
+                                        
+                    if not os.path.isdir(save_dir):
+                        os.mkdir(save_dir)
+                    save_f = os.path.join(save_dir, f"{fname}.npy")
+                    np.save(save_f, log["results"].mean(axis=1)[:args.max_timesteps])
             print(logs[0]['timesteps'].shape)
             if args.avg:
                 timesteps = np.mean([_log['timesteps'] for _log in logs], axis=0)
                 results = np.mean([_log['results'].mean(axis=1) for _log in logs], axis=0)
                 plt.plot(timesteps[0:args.max_timesteps], results[:args.max_timesteps])
             plt.legend()
-            if not os.path.isdir(f"/home/nycucpu1/minatar/rl-baselines3-zoo/evals/{env}"):
-                os.makedirs(f"/home/nycucpu1/minatar/rl-baselines3-zoo/evals/{env}")
+            if not os.path.isdir(f"/home/darklanx/update/rl-baselines3-zoo/evals/{env}"):
+                os.makedirs(f"/home/darklanx/update/rl-baselines3-zoo/evals/{env}")
             
-            plt.savefig(f"/home/nycucpu1/minatar/rl-baselines3-zoo/evals/{env}/{algo}_eval.png")           
+            plt.savefig(f"/home/darklanx/update/rl-baselines3-zoo/evals/{env}/{algo}_eval.png")           
 
 
 
@@ -175,4 +182,4 @@ for folder in dirs:
 # plt.legend()
 plt.tight_layout()
 
-plt.savefig(f"/home/nycucpu1/minatar/rl-baselines3-zoo/evals/{env}/{algo}_train.png")
+plt.savefig(f"/home/darklanx/update/rl-baselines3-zoo/evals/{env}/{algo}_train.png")
