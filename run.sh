@@ -1,7 +1,9 @@
 for seed in {1..10}
 do
     # python3 train.py --algo ppo --env asterix -min -n 1000000 --seed $seed
-    python3 train.py --algo offpac --env seaquest -min -n 3000000 --seed $seed 
+    # python3 train.py --algo offpac --env seaquest -min -n 3000000 --seed $seed 
+    python3 train.py --algo offpac --env space_invaders -min -n 3000000 --seed $seed
+    #python3 train.py --algo offpac --env breakout -min -n 3000000 --seed 0
     # python3 train.py --algo ppo --env asterix -min -n 3000000 --seed $seed > /dev/null
     # python3 train.py --algo offpac --env asterix -min -n 1000000 --seed $(($seed+1)) -params KL:True > /dev/null &
 
