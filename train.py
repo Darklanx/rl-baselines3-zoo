@@ -3,7 +3,8 @@ import difflib
 import importlib
 import os
 import uuid
-
+import sys
+sys.path.insert(0, os.environ['SB_PATH'])
 import gym
 import numpy as np
 import seaborn

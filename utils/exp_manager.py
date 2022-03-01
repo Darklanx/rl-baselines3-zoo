@@ -1,5 +1,7 @@
 import argparse
 import os
+import sys
+sys.path.insert(0, os.environ['SB_PATH'])
 import pickle as pkl
 import time
 import warnings
