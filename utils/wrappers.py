@@ -3,6 +3,23 @@ import numpy as np
 from sb3_contrib.common.wrappers import TimeFeatureWrapper  # noqa: F401 (backward compatibility)
 from scipy.signal import iirfilter, sosfilt, zpk2sos
 
+class MinAtarWrapper(gym.Wrapper):
+    def __init__(self, env):
+        super(MinAtarWrapper, self).__init__(env)
+        shape = (env.observation_space.shape[2], env.observation_space.shape[0], env.observation_space.shape[1])
+        low = np.moveaxis(env.observation_space.low, -1, 0)
+        high = np.moveaxis(env.observation_space.high, -1, 0)
+
+        env.observation_space = gym.spaces.Box(low=low, high=high, dtype=env.observation_space.dtype, shape=shape)
+
+    def reset(self):
+
+        return np.moveaxis(self.env.reset(), -1, 0)
+
+    def step(self, action):
+        obs, reward, done, info = self.env.step(action)
+        obs = np.moveaxis(obs, -1, 0)
+        return obs, reward, done, info 
 
 class DoneOnSuccessWrapper(gym.Wrapper):
     """

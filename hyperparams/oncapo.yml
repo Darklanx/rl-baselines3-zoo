@@ -9,6 +9,17 @@ atari:
   vf_coef: 0.25
   policy_kwargs: "dict(optimizer_class=RMSpropTFLike, optimizer_kwargs=dict(eps=1e-5))"
 
+MinAtar/Breakout-v0:
+  env_wrapper:
+    - utils.wrappers.MinAtarWrapper
+  policy: 'CnnPolicy'
+  n_envs: 16
+  n_timesteps: !!float 1e7
+  ent_coef: 0.01
+  vf_coef: 0.25
+  policy_kwargs: "dict(optimizer_class=RMSpropTFLike, optimizer_kwargs=dict(eps=1e-5))"
+
+
 # {'gamma': 0.99, 'normalize_advantage': True, 'max_grad_norm': 0.8, 'use_rms_prop': False, 'gae_lambda': 0.9, 'n_steps': 128, 'lr_schedule': 'constant', 'learning_rate': 0.0006096807696418622, 'ent_coef': 0.0006433922033492075, 'vf_coef': 0.7053931256213299, 'ortho_init': False, 'net_arch': 'medium', 'activation_fn': 'tanh'}
 CartPole-v1:
   gamma: 0.99
