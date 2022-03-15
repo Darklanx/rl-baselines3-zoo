@@ -133,8 +133,11 @@ class ExperimentManager(object):
         self.save_replay_buffer = save_replay_buffer
 
         self.log_path = f"{log_folder}/{self.algo}/"
+        # self.save_path = os.path.join(
+        #     self.log_path, f"{self.env_id}_{get_latest_run_id(self.log_path, self.env_id) + 1}{uuid_str}"
+        # )
         self.save_path = os.path.join(
-            self.log_path, f"{self.env_id}_{get_latest_run_id(self.log_path, self.env_id) + 1}{uuid_str}"
+            self.log_path, f"{self.env_id.split('/')[-1]}_{get_latest_run_id(self.log_path, self.env_id.split('/')[-1]) + 1}{uuid_str}"
         )
         self.params_path = f"{self.save_path}/{self.env_id}"
 
@@ -155,8 +158,9 @@ class ExperimentManager(object):
         env = self.create_envs(self.n_envs, no_log=False)
 
         self._hyperparams = self._preprocess_action_noise(hyperparams, saved_hyperparams, env)
-        if self.algo == 'offpac':
-            self._hyperparams["save_path"] = self.save_path
+        # if self.algo == 'offpac':
+        #     self._hyperparams["save_path"] = self.save_path
+
         if self.continue_training:
             model = self._load_pretrained_agent(self._hyperparams, env)
         elif self.optimize_hyperparameters:
