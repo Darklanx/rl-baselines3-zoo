@@ -131,8 +131,10 @@ class ExperimentManager(object):
         self.args = args
         self.log_interval = log_interval
         self.save_replay_buffer = save_replay_buffer
-
-        self.log_path = f"{log_folder}/{self.algo}/"
+        if self.custom_hyperparams.get("KL", False):
+            self.log_path = f"{log_folder}/CAPO/"
+        else:
+            self.log_path = f"{log_folder}/{self.algo}/"
         # self.save_path = os.path.join(
         #     self.log_path, f"{self.env_id}_{get_latest_run_id(self.log_path, self.env_id) + 1}{uuid_str}"
         # )
@@ -183,6 +185,9 @@ class ExperimentManager(object):
         :param model: an initialized RL model
         """
         kwargs = {}
+        if self.custom_hyperparams.get("KL", False):
+            kwargs.update({"tb_log_name": "CAPO"})
+
         if self.log_interval > -1:
             kwargs = {"log_interval": self.log_interval}
 

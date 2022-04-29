@@ -39,9 +39,9 @@ if __name__ == "__main__":  # noqa: C901
     parser.add_argument("--num-threads", help="Number of threads for PyTorch (-1 to use default)", default=-1, type=int)
     parser.add_argument("--log-interval", help="Override log interval (default: -1, no change)", default=-1, type=int)
     parser.add_argument(
-        "--eval-freq", help="Evaluate the agent every n steps (if negative, no evaluation)", default=10000, type=int
+        "--eval-freq", help="Evaluate the agent every n steps (if negative, no evaluation)", default=100000, type=int
     )
-    parser.add_argument("--eval-episodes", help="Number of episodes to use for evaluation", default=100, type=int)
+    parser.add_argument("--eval-episodes", help="Number of episodes to use for evaluation", default=30, type=int)
     parser.add_argument("--save-freq", help="Save the model every n steps (if negative, no checkpoint)", default=-1, type=int)
     parser.add_argument(
         "--save-replay-buffer", help="Save the replay buffer too (when applicable)", action="store_true", default=False
