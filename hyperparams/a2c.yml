@@ -70,7 +70,7 @@ MinAtar/Freeway-v0:
   policy_kwargs: "dict(optimizer_class=RMSpropTFLike, optimizer_kwargs=dict(eps=1e-5))"
 
 
-MiniGrid-SimpleCrossingS9N1-v0:
+MiniGrid-Empty-5x5-v0:
   n_envs: 8
   n_timesteps: !!float 1e6
   policy: 'MlpPolicy'

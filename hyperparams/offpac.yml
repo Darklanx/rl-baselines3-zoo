@@ -1,3 +1,4 @@
+
 atari:
   env_wrapper:
     - stable_baselines3.common.atari_wrappers.AtariWrapper
@@ -51,11 +52,11 @@ space_invaders:
   reg_coef: 0
   policy_kwargs: "dict(net_arch=[128])"
 
-MiniGrid-SimpleCrossingS9N1-v0:
+MiniGrid-Empty-5x5-v0:
   env_wrapper: 
     - gym_minigrid.wrappers.FlatObsWrapper
-    - gym_minigrid.wrappers.NoiseWrapper:
-        std: 0.1
+    # - gym_minigrid.wrappers.NoiseWrapper:
+        # std: 0.1
   n_envs: 64
   n_timesteps: !!float 5e6
   learning_rate: 0.00010130096573946154

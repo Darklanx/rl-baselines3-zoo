@@ -9,6 +9,7 @@ import gym
 import numpy as np
 import seaborn
 import torch as th
+import gym_minigrid
 from stable_baselines3.common.utils import set_random_seed
 import time
 # Register custom envs
@@ -106,6 +107,7 @@ if __name__ == "__main__":  # noqa: C901
 
     env_id = args.env
     registered_envs = set(gym.envs.registry.env_specs.keys())  # pytype: disable=module-attr
+    # print(registered_envs)
     registered_envs.add('breakout')
     registered_envs.add('freeway')
     registered_envs.add('asterix')
