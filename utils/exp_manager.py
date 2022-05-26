@@ -131,7 +131,7 @@ class ExperimentManager(object):
         self.args = args
         self.log_interval = log_interval
         self.save_replay_buffer = save_replay_buffer
-        if self.custom_hyperparams.get("KL", False):
+        if self.custom_hyperparams and self.custom_hyperparams.get("KL", False):
             self.log_path = f"{log_folder}/CAPO/"
         else:
             self.log_path = f"{log_folder}/{self.algo}/"
@@ -185,7 +185,7 @@ class ExperimentManager(object):
         :param model: an initialized RL model
         """
         kwargs = {}
-        if self.custom_hyperparams.get("KL", False):
+        if self.custom_hyperparams and self.custom_hyperparams.get("KL", False):
             kwargs.update({"tb_log_name": "CAPO"})
 
         if self.log_interval > -1:

@@ -8,7 +8,75 @@ atari:
   n_steps: 256
   n_epochs: 10
   batch_size: 16
-  n_timesteps: !!float 3e6
+  n_timesteps: !!float 1e7
+  learning_rate: lin_2.5e-4
+  clip_range: lin_0.1
+  gamma: 0.98
+  ent_coef: 4.04497635826383e-06
+  gae_lambda: 0.92
+  max_grad_norm: 0.5
+  vf_coef: 0.3860821444162465
+
+MinAtar/Freeway-v0:
+  env_wrapper:
+    - utils.wrappers.MinAtarWrapper
+  policy: 'CnnPolicy'
+  n_envs: 40
+  n_steps: 256
+  n_epochs: 10
+  batch_size: 16
+  n_timesteps: !!float 1e7
+  learning_rate: lin_2.5e-4
+  clip_range: lin_0.1
+  gamma: 0.98
+  ent_coef: 4.04497635826383e-06
+  gae_lambda: 0.92
+  max_grad_norm: 0.5
+  vf_coef: 0.3860821444162465
+
+MinAtar/Breakout-v0:
+  env_wrapper:
+    - utils.wrappers.MinAtarWrapper
+  policy: 'CnnPolicy'
+  n_envs: 40
+  n_steps: 256
+  n_epochs: 10
+  batch_size: 16
+  n_timesteps: !!float 1e7
+  learning_rate: lin_2.5e-4
+  clip_range: lin_0.1
+  gamma: 0.98
+  ent_coef: 4.04497635826383e-06
+  gae_lambda: 0.92
+  max_grad_norm: 0.5
+  vf_coef: 0.3860821444162465
+
+MinAtar/Seaquest-v0:
+  env_wrapper:
+    - utils.wrappers.MinAtarWrapper
+  policy: 'CnnPolicy'
+  n_envs: 40
+  n_steps: 256
+  n_epochs: 10
+  batch_size: 16
+  n_timesteps: !!float 1e7
+  learning_rate: lin_2.5e-4
+  clip_range: lin_0.1
+  gamma: 0.98
+  ent_coef: 4.04497635826383e-06
+  gae_lambda: 0.92
+  max_grad_norm: 0.5
+  vf_coef: 0.3860821444162465
+
+MinAtar/SpaceInvaders-v0:
+  env_wrapper:
+    - utils.wrappers.MinAtarWrapper
+  policy: 'CnnPolicy'
+  n_envs: 40
+  n_steps: 256
+  n_epochs: 10
+  batch_size: 16
+  n_timesteps: !!float 1e7
   learning_rate: lin_2.5e-4
   clip_range: lin_0.1
   gamma: 0.98
@@ -18,7 +86,22 @@ atari:
   vf_coef: 0.3860821444162465
 
 
-
+MinAtar/Asterix-v0:
+  env_wrapper:
+    - utils.wrappers.MinAtarWrapper
+  policy: 'CnnPolicy'
+  n_envs: 40
+  n_steps: 256
+  n_epochs: 10
+  batch_size: 16
+  n_timesteps: !!float 1e7
+  learning_rate: lin_2.5e-4
+  clip_range: lin_0.1
+  gamma: 0.98
+  ent_coef: 4.04497635826383e-06
+  gae_lambda: 0.92
+  max_grad_norm: 0.5
+  vf_coef: 0.3860821444162465
 Pendulum-v0:
   n_envs: 8
   n_timesteps: !!float 2e6

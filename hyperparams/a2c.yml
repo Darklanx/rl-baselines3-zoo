@@ -9,6 +9,67 @@ atari:
   vf_coef: 0.25
   policy_kwargs: "dict(optimizer_class=RMSpropTFLike, optimizer_kwargs=dict(eps=1e-5))"
 
+
+
+MinAtar/Asterix-v0:
+  env_wrapper:
+    - utils.wrappers.MinAtarWrapper
+  frame_stack: 1
+  policy: 'CnnPolicy'
+  n_envs: 10
+  n_timesteps: !!float 1e7
+  ent_coef: 0.01
+  vf_coef: 0.25
+  policy_kwargs: "dict(optimizer_class=RMSpropTFLike, optimizer_kwargs=dict(eps=1e-5))"
+
+MinAtar/Breakout-v0:
+  env_wrapper:
+    - utils.wrappers.MinAtarWrapper
+  frame_stack: 1
+  policy: 'CnnPolicy'
+  n_envs: 10
+  n_timesteps: !!float 1e7
+  ent_coef: 0.01
+  vf_coef: 0.25
+  policy_kwargs: "dict(optimizer_class=RMSpropTFLike, optimizer_kwargs=dict(eps=1e-5))"
+
+MinAtar/SpaceInvaders-v0:
+  env_wrapper:
+    - utils.wrappers.MinAtarWrapper
+  frame_stack: 1
+  policy: 'CnnPolicy'
+  n_envs: 10
+  n_timesteps: !!float 1e7
+  ent_coef: 0.01
+  vf_coef: 0.25
+  policy_kwargs: "dict(optimizer_class=RMSpropTFLike, optimizer_kwargs=dict(eps=1e-5))"
+
+
+MinAtar/Seaquest-v0:
+  env_wrapper:
+    - utils.wrappers.MinAtarWrapper
+  frame_stack: 1
+  policy: 'CnnPolicy'
+  n_envs: 10
+  n_timesteps: !!float 1e7
+  ent_coef: 0.01
+  vf_coef: 0.25
+  policy_kwargs: "dict(optimizer_class=RMSpropTFLike, optimizer_kwargs=dict(eps=1e-5))"
+  
+
+
+MinAtar/Freeway-v0:
+  env_wrapper:
+    - utils.wrappers.MinAtarWrapper
+  frame_stack: 1
+  policy: 'CnnPolicy'
+  n_envs: 10
+  n_timesteps: !!float 1e7
+  ent_coef: 0.01
+  vf_coef: 0.25
+  policy_kwargs: "dict(optimizer_class=RMSpropTFLike, optimizer_kwargs=dict(eps=1e-5))"
+
+
 MiniGrid-SimpleCrossingS9N1-v0:
   n_envs: 8
   n_timesteps: !!float 1e6
